@@ -16,16 +16,14 @@ mongoose.connect('mongodb://localhost/mongo-1', {
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', ()=> {
-    const VisitorsSchema = mongoose.Schema({
-    
+
+    const VisitorsSchema = mongoose.Schema({    
         date : Date,
-        name : String,
-        
+        name : String,        
     })
-    const Visitors = mongoose.model('Visitors',VisitorsSchema,'mongo-1')
+    const Visitors = mongoose.model('Visitors',VisitorsSchema,'mongo-1')   
     
-    
-    const visit = [];
+    let visit = [];
 
     app.get('/:name',(req,res)=>{
         
@@ -33,19 +31,35 @@ db.once('open', ()=> {
         req.params.date = new Date();
         visit.push(req.params);
         Visitors.insertMany(visit)
-          
+
+        console.log(visit)
+        
+        visit =[];  
+
         res.status(200).send(`<h1>El visitante fue almacenado con éxito</h1>`)
 
         console.log(visit)
+        
     })
+
+
     app.get('/',(req,res)=>{
-        const anonimo = 
+
+        const anonymous = 
         {
             name : "Anónimo",
             date : new Date()
         }
-        visit.push(anonimo)
+
+        visit.push(anonymous)
         Visitors.insertMany(visit)
+
+        console.log(visit)
+        
+        visit =[];
+
+        console.log(visit)
+
         res.status(200).send(`<h1>El visitante fue almacenado con éxito</h1>`)
     })
 
