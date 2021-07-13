@@ -34,7 +34,7 @@ app.get('/',  (req,res)=>{
 
     if(req.query.name === undefined || req.query.name === ''){
 
-        visitors.name = 'Anonimo';
+        visitors.name = 'Anónimo';
         visitors.date = Date.now();
         visitors.save();
     }
