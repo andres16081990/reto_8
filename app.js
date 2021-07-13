@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const port = 3000;
 
-mongoose.connect('mongodb://localhost/mongo-1', {
+mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/mongo-1', {
   useNewUrlParser: true,
 });
 
