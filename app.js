@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const port = 3000;
 
-mongoose.connect('mongodb://localhost/mongo-1', {
+mongoose.connect('mongodb://localhost/test1', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
@@ -18,52 +18,37 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', ()=> {
 
     const VisitorsSchema = mongoose.Schema({    
-        date : Date,
-        name : String,        
+        date : {
+            type : Date,
+        },
+        name : {
+            type : String,
+            require: true
+        },        
     })
-    const Visitors = mongoose.model('Visitors',VisitorsSchema,'mongo-1')   
+    const Visitors = mongoose.model('Visitors',VisitorsSchema) 
     
-    let visit = [];
-
-    app.get('/:name',(req,res)=>{
+    
+    app.get('/',  (req,res)=>{
         
-        const {name} = req.params;
-        req.params.date = new Date();
-        visit.push(req.params);
-        Visitors.insertMany(visit)
+        const visitors = new Visitors(req.query)
 
-        console.log(visit)
-        
-        visit =[];  
+        if(req.query.name === undefined || req.query.name === ''){
 
-        res.status(200).send(`<h1>El visitante fue almacenado con éxito</h1>`)
-
-        console.log(visit)
-        
-    })
-
-
-    app.get('/',(req,res)=>{
-
-        const anonymous = 
-        {
-            name : "Anónimo",
-            date : new Date()
+            visitors.name = 'Anonimo';
+            visitors.date = Date.now();
+            visitors.save();
         }
-
-        visit.push(anonymous)
-        Visitors.insertMany(visit)
-
-        console.log(visit)
-        
-        visit =[];
-
-        console.log(visit)
-
+        else{
+            visitors.date = Date.now();            
+            visitors.save();
+        }        
         res.status(200).send(`<h1>El visitante fue almacenado con éxito</h1>`)
+
     })
 
-    console.log('conected')
+     console.log('conected')
+
 });
 
 
