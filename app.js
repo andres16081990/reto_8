@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const port = 3000;
 
-mongoose.connect('mongodb://localhost/test1', {
+mongoose.connect('mongodb://localhost/mongo-1', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
@@ -26,7 +26,7 @@ db.once('open', ()=> {
             require: true
         },        
     })
-    const Visitors = mongoose.model('Visitors',VisitorsSchema) 
+    const Visitors = mongoose.model('Visitor',VisitorsSchema) 
     
     
     app.get('/',  (req,res)=>{
